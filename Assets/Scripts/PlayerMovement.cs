@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed, maxSpeed = 2f, turnRate=20f;
+    public float speed=1f, maxSpeed = 2f, turnSpeed=20f;
+
+    private float movementInput, turnInput;
     private Rigidbody2D playerRB;
     // Start is called before the first frame update
     void Start()
@@ -16,7 +18,20 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        speed = Input.GetKey("W");
+        movementInput = Input.GetAxis("Vertical");
+        turnInput = Input.GetAxis("Horizontal");
+    }
 
+    private void Move()
+    {
+        Vector2 movement = transform.forward * movementInput * speed * Time.deltaTime;
+        playerRB.AddForce(movement);
+    }
+
+    private void Turn()
+    {
+        float turn = turnInput * turnSpeed * Time.deltaTime;
+        
+        playerRB.MoveRotation(playerRB.rotation * turn);
     }
 }
